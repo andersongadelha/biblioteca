@@ -25,5 +25,5 @@ public class Usuario {
     public void removerLivro(Livro livro) {
         this.livrosEmprestados.remove(livro);
     }
-    
+
 }
