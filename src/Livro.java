@@ -25,5 +25,5 @@ public class Livro {
     public void devolver() {
         this.disponivel = true;
     }
-    
+
 }
