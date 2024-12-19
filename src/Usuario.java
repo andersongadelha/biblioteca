@@ -26,4 +26,12 @@ public class Usuario {
         this.livrosEmprestados.remove(livro);
     }
 
+    @Override
+    public String toString() { //TODO: Utilizar getters para exibir informações do usuário
+        return "\n Usuario{" +
+                "nome='" + nome + '\'' +
+                ", id=" + id +
+                ", livrosEmprestados=" + livrosEmprestados +
+                '}';
+    }
 }
