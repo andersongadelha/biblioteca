@@ -113,6 +113,13 @@ public class Biblioteca {
                 case 3:
                     realizarEmprestimo(scanner);
                     break;
+                case 5:
+                    livros.forEach(livro -> {
+                        if (livro.isDisponivel()) {
+                            livro.exibirDetalhes();
+                        }
+                    });
+                    break;
                 case 6:
                     livros.forEach(Livro::exibirDetalhes);
                     break;
