@@ -1,14 +1,16 @@
+import java.util.UUID;
+
 public class Livro {
     private String titulo;
     private String autor;
     private String isbn;
     private boolean disponivel;
 
-    public Livro(String titulo, String autor, String isbn, boolean disponivel) {
+    public Livro(String titulo, String autor) {
         this.titulo = titulo;
         this.autor = autor;
-        this.isbn = isbn;
-        this.disponivel = disponivel;
+        this.isbn = UUID.randomUUID().toString();
+        this.disponivel = true;
     }
 
     public void exibirDetalhes() {

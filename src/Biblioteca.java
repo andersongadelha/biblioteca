@@ -15,8 +15,8 @@ public class Biblioteca {
 
     }
 
-    private void cadastrarLivro(String titulo, String autor, String isbn, boolean disponivel) {
-        Livro livro = new Livro(titulo, autor, isbn, disponivel);
+    private void cadastrarLivro(String titulo, String autor) {
+        Livro livro = new Livro(titulo, autor);
         this.livros.add(livro);
     }
 
@@ -61,15 +61,12 @@ public class Biblioteca {
                 case 1:
                     String titulo;
                     String autor;
-                    String isbn;
                     scanner.nextLine();
                     System.out.println("Digite o nome do livro:");
                     titulo = scanner.nextLine();
                     System.out.println("Digite o nome de quem escreveu o livro:");
                     autor = scanner.nextLine();
-                    System.out.println("Digite o código isbn do livro:");
-                    isbn = scanner.nextLine();
-                    cadastrarLivro(titulo, autor, isbn, true);
+                    cadastrarLivro(titulo, autor);
                     break;
                 case 2:
                     String nome;
