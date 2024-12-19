@@ -15,13 +15,23 @@ public class Biblioteca {
 
     }
 
-    private void cadastrarLivro(String titulo, String autor) {
+    private void cadastrarLivro(Scanner scanner) {
+        scanner.nextLine();
+        System.out.println("Digite o nome do livro:");
+        String titulo = scanner.nextLine();
+        System.out.println("Digite o nome de quem escreveu o livro:");
+        String autor = scanner.nextLine();
         Livro livro = new Livro(titulo, autor);
+
         this.livros.add(livro);
     }
 
-    private void cadastrarUsuario(String nome, int id) {
+    private void cadastrarUsuario(Scanner scanner, int id) {
+        scanner.nextLine();
+        System.out.println("Digite o nome do usuário:");
+        String nome = scanner.nextLine();
         Usuario usuario = new Usuario(nome, id, new ArrayList<>());
+
         this.usuarios.add(usuario);
     }
 
@@ -93,36 +103,21 @@ public class Biblioteca {
             opcao = getOpcao(scanner);
             switch (opcao) {
                 case 1:
-                    String titulo;
-                    String autor;
-                    scanner.nextLine();
-                    System.out.println("Digite o nome do livro:");
-                    titulo = scanner.nextLine();
-                    System.out.println("Digite o nome de quem escreveu o livro:");
-                    autor = scanner.nextLine();
-                    cadastrarLivro(titulo, autor);
-
+                    cadastrarLivro(scanner);
                     break;
                 case 2:
-                    String nome;
-                    scanner.nextLine();
-                    System.out.println("Digite o nome do usuário:");
-                    nome = scanner.nextLine();
-                    cadastrarUsuario(nome, proximoIdUsuario);
+                    cadastrarUsuario(scanner, proximoIdUsuario);
                     proximoIdUsuario++;
 
                     break;
                 case 3:
                     realizarEmprestimo(scanner);
-
                     break;
                 case 6:
                     livros.forEach(Livro::exibirDetalhes);
-
                     break;
                 case 7:
                     usuarios.forEach(Usuario::exibirDetalhes);
-
                     break;
             }
         } while (opcao != 8);
