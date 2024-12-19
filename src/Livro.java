@@ -22,6 +22,16 @@ public class Livro {
         this.disponivel = false;
     }
 
+    @Override
+    public String toString() {// TODO: implementar getters para exibir no console
+        return "\n Livro{" +
+                "titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", disponivel=" + disponivel +
+                '}';
+    }
+
     public void devolver() {
         this.disponivel = true;
     }

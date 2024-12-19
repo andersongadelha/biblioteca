@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,7 +15,8 @@ public class Biblioteca {
 
     }
 
-    private void cadastrarLivro(Livro livro) {
+    private void cadastrarLivro(String titulo, String autor, String isbn, boolean disponivel) {
+        Livro livro = new Livro(titulo, autor, isbn, disponivel);
         this.livros.add(livro);
     }
 
@@ -48,24 +50,43 @@ public class Biblioteca {
 
     public void iniciar() {
         int opcao;
-        this.usuarios = new ArrayList<>();
-        int id = 1;
+        usuarios = new ArrayList<>();
+        livros = new ArrayList<>();
+        int idUsuario = 1;
         Scanner scanner = new Scanner(System.in);
         do {
             exibirMenu();
             opcao = getOpcao(scanner);
             switch (opcao) {
+                case 1:
+                    String titulo;
+                    String autor;
+                    String isbn;
+                    scanner.nextLine();
+                    System.out.println("Digite o nome do livro:");
+                    titulo = scanner.nextLine();
+                    System.out.println("Digite o nome de quem escreveu o livro:");
+                    autor = scanner.nextLine();
+                    System.out.println("Digite o código isbn do livro:");
+                    isbn = scanner.nextLine();
+                    cadastrarLivro(titulo, autor, isbn, true);
+                    break;
                 case 2:
                     String nome;
                     scanner.nextLine();
                     System.out.println("Digite o nome do usuário:");
                     nome = scanner.nextLine();
-                    cadastrarUsuario(nome, id);
-                    id++;
+                    cadastrarUsuario(nome, idUsuario);
+                    idUsuario++;
+                    break;
                 case 6:
+                    System.out.println(livros);
+                    break;
+                case 7:
                     System.out.println(usuarios);
+                    break;
             }
-        } while (opcao != 7);
+        } while (opcao != 8);
         scanner.close();
     }
 
@@ -86,8 +107,9 @@ public class Biblioteca {
         System.out.println("│ 3 - Realizar empréstimo       │");
         System.out.println("│ 4 - Realizar devolução        │");
         System.out.println("│ 5 - Exibir livros disponíveis │");
-        System.out.println("│ 6 - Exibir usuários           │");
-        System.out.println("│ 7 - Sair                      │");
+        System.out.println("│ 6 - Exibir todos os livros    │");
+        System.out.println("│ 7 - Exibir usuários           │");
+        System.out.println("│ 8 - Sair                      │");
         System.out.println("└───────────────────────────────┘");
     }
 }
