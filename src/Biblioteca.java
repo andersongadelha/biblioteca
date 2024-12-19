@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -77,10 +76,10 @@ public class Biblioteca {
                     idUsuario++;
                     break;
                 case 6:
-                    System.out.println(livros);
+                    livros.forEach(Livro::exibirDetalhes);
                     break;
                 case 7:
-                    System.out.println(usuarios);
+                    usuarios.forEach(Usuario::exibirDetalhes);
                     break;
             }
         } while (opcao != 8);

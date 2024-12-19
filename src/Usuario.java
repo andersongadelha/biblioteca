@@ -16,6 +16,7 @@ public class Usuario {
         System.out.println("Nome: " + nome);
         System.out.println("Id: " + id);
         System.out.println("Livros emprestados: " + livrosEmprestados);
+        System.out.println();
     }
 
     public void adicionarLivro(Livro livro) {
@@ -26,12 +27,4 @@ public class Usuario {
         this.livrosEmprestados.remove(livro);
     }
 
-    @Override
-    public String toString() { //TODO: Utilizar getters para exibir informações do usuário
-        return "\n Usuario{" +
-                "nome='" + nome + '\'' +
-                ", id=" + id +
-                ", livrosEmprestados=" + livrosEmprestados +
-                '}';
-    }
 }
