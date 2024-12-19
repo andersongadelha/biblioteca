@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Biblioteca {
@@ -24,11 +25,29 @@ public class Biblioteca {
         this.usuarios.add(usuario);
     }
 
-    private void realizarEmprestimo(String isbn, int idUsuario) {
-        //buscar usuario e ver se possui menos de 3 livros emprestados
-        //caso tenha menos adicionar o livro no usuario e marcar livro como indisponivel
-        //se não mostrar alguma mensagem
+    private void realizarEmprestimo(Scanner scanner) {
+        scanner.nextLine();
+        System.out.println("Digite o isbn do livro:");
+        String isbn = scanner.nextLine();
+        System.out.println("Digite o id do usuário:");
+        int idUsuario = scanner.nextInt();
+        Usuario usuario = buscaUsuarioPorId(idUsuario);
+        Livro livro = buscarLivroPorIsbn(isbn);
 
+        if (Objects.nonNull(usuario) && Objects.nonNull(livro)) {
+            if (usuario.getLivrosEmprestados().size() < 3) {
+                if (livro.isDisponivel()) {
+                    usuario.adicionarLivro(livro);
+                    livro.setDisponivel(false);
+                } else {
+                    System.out.println("Livro indisponível.");
+                }
+            } else {
+                System.out.println("Erro ao realizar empréstimo: usuário já possui 3 livros emprestados.");
+            }
+        } else {
+            System.out.println("Erro ao realizar empréstimo: Livro ou usuário não cadastrado.");
+        }
     }
 
     private void realizarDevolucao(String isbn, int idUsuario) {
@@ -42,17 +61,33 @@ public class Biblioteca {
         //busca entre os livros apenas os disponíveis para exibir em tela
     }
 
+    private Livro buscarLivroPorIsbn(String isbn) {
+        for (Livro livro : livros) {
+            if (isbn.equals(livro.getIsbn())) {
+                return livro;
+            }
+        }
+
+        return null;
+    }
+
     private Usuario buscaUsuarioPorId(int id) {
-        // busca na lista de usuarios pelo id e retorna usuario
-        return new Usuario("teste", 1, new ArrayList<>());
+        for (Usuario usuario : usuarios) {
+            if (usuario.getId() == id) {
+                return usuario;
+            }
+        }
+
+        return null;
     }
 
     public void iniciar() {
         int opcao;
         usuarios = new ArrayList<>();
         livros = new ArrayList<>();
-        int idUsuario = 1;
+        int proximoIdUsuario = 1;
         Scanner scanner = new Scanner(System.in);
+
         do {
             exibirMenu();
             opcao = getOpcao(scanner);
@@ -66,23 +101,32 @@ public class Biblioteca {
                     System.out.println("Digite o nome de quem escreveu o livro:");
                     autor = scanner.nextLine();
                     cadastrarLivro(titulo, autor);
+
                     break;
                 case 2:
                     String nome;
                     scanner.nextLine();
                     System.out.println("Digite o nome do usuário:");
                     nome = scanner.nextLine();
-                    cadastrarUsuario(nome, idUsuario);
-                    idUsuario++;
+                    cadastrarUsuario(nome, proximoIdUsuario);
+                    proximoIdUsuario++;
+
+                    break;
+                case 3:
+                    realizarEmprestimo(scanner);
+
                     break;
                 case 6:
                     livros.forEach(Livro::exibirDetalhes);
+
                     break;
                 case 7:
                     usuarios.forEach(Usuario::exibirDetalhes);
+
                     break;
             }
         } while (opcao != 8);
+
         scanner.close();
     }
 

@@ -6,6 +6,18 @@ public class Usuario {
     private int id;
     private ArrayList<Livro> livrosEmprestados;
 
+    public String getNome() {
+        return nome;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public ArrayList<Livro> getLivrosEmprestados() {
+        return livrosEmprestados;
+    }
+
     public Usuario(String nome, int id, ArrayList<Livro> livrosEmprestados) {
         this.nome = nome;
         this.id = id;
@@ -15,8 +27,14 @@ public class Usuario {
     public void exibirDetalhes() {
         System.out.println("Nome: " + nome);
         System.out.println("Id: " + id);
-        System.out.println("Livros emprestados: " + livrosEmprestados);
+        System.out.println("Livros emprestados:");
+        exibirDetalhesLivros();
         System.out.println();
+
+    }
+
+    private void exibirDetalhesLivros() {
+        this.livrosEmprestados.forEach(Livro::exibirDetalhes);
     }
 
     public void adicionarLivro(Livro livro) {

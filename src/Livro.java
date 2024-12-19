@@ -6,6 +6,18 @@ public class Livro {
     private String isbn;
     private boolean disponivel;
 
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
     public Livro(String titulo, String autor) {
         this.titulo = titulo;
         this.autor = autor;
