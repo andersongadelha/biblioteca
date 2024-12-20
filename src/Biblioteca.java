@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Biblioteca {
     private ArrayList<Livro> livros;
@@ -60,15 +61,42 @@ public class Biblioteca {
         }
     }
 
-    private void realizarDevolucao(String isbn, int idUsuario) {
-        //buscarUsuario e verificar se esse livro esta com ele
-        //caso sim remover da lista de usuario e marcar livro como disponivel
-        //se não mostrar alguma mensagem
+    private void realizarDevolucao(Scanner scanner) {
+        scanner.nextLine();
+        System.out.println("Digite o isbn do livro:");
+        String isbn = scanner.nextLine();
+        System.out.println("Digite o id do usuário:");
+        int idUsuario = scanner.nextInt();
+        Usuario usuario = buscaUsuarioPorId(idUsuario);
+        Livro livro = buscarLivroPorIsbn(isbn);
+
+        if (Objects.nonNull(usuario) && Objects.nonNull(livro)) {
+            AtomicBoolean encontrado = new AtomicBoolean(false);
+            usuario.getLivrosEmprestados().forEach(emprestado -> {
+                if (isbn.equals(emprestado.getIsbn())) {
+                    encontrado.set(true);
+                }
+            });
+            if (encontrado.get()) {
+                usuario.removerLivro(livro);
+                livro.setDisponivel(true);
+            } else {
+                System.out.println("O livro não esta emprestado com esse usuário.");
+            }
+
+        } else {
+            System.out.println("Erro ao realizar devolução: Livro ou usuário não cadastrado.");
+        }
+
     }
 
     private void exibirLivrosDisponiveis() {
         System.out.println("Livros disponíveis: ");
-        //busca entre os livros apenas os disponíveis para exibir em tela
+        livros.forEach(livro -> {
+            if (livro.isDisponivel()) {
+                livro.exibirDetalhes();
+            }
+        });
     }
 
     private Livro buscarLivroPorIsbn(String isbn) {
@@ -108,17 +136,15 @@ public class Biblioteca {
                 case 2:
                     cadastrarUsuario(scanner, proximoIdUsuario);
                     proximoIdUsuario++;
-
                     break;
                 case 3:
                     realizarEmprestimo(scanner);
                     break;
+                case 4:
+                    realizarDevolucao(scanner);
+                    break;
                 case 5:
-                    livros.forEach(livro -> {
-                        if (livro.isDisponivel()) {
-                            livro.exibirDetalhes();
-                        }
-                    });
+                    exibirLivrosDisponiveis();
                     break;
                 case 6:
                     livros.forEach(Livro::exibirDetalhes);
