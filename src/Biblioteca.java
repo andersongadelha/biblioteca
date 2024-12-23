@@ -42,6 +42,32 @@ public class Biblioteca {
         }
     }
 
+    private static void salvarUsuarios(ArrayList<Usuario> usuarios) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USUARIOS_TXT))) {
+            for (Usuario usuario : usuarios) {
+                writer.write(usuario.serializar());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar usuário");
+        }
+    }
+
+    private static ArrayList<Usuario> carregarUsuarios() {
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(USUARIOS_TXT))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                usuarios.add(Usuario.desserializar(linha));
+            }
+        } catch (Exception e) {
+            System.out.println("Não possui usuários salvos na base.");
+        }
+
+        return usuarios;
+    }
+
     private static ArrayList<Livro> carregarLivros() {
         ArrayList<Livro> livros = new ArrayList<>();
 
@@ -51,7 +77,7 @@ public class Biblioteca {
                 livros.add(Livro.desserializar(linha));
             }
         } catch (Exception e) {
-            return livros;
+            System.out.println("Não possui livros salvos na base");
         }
 
         return livros;
@@ -64,6 +90,7 @@ public class Biblioteca {
         Usuario usuario = new Usuario(nome, id, new ArrayList<>());
 
         this.usuarios.add(usuario);
+        salvarUsuarios(usuarios);
     }
 
     private void realizarEmprestimo(Scanner scanner) {
@@ -81,6 +108,7 @@ public class Biblioteca {
                     usuario.adicionarLivro(livro);
                     livro.emprestar();
                     salvarLivros(livros);
+                    salvarUsuarios(usuarios);
                 } else {
                     System.out.println("Livro indisponível.");
                 }
@@ -112,6 +140,7 @@ public class Biblioteca {
                 usuario.removerLivro(livro);
                 livro.devolver();
                 salvarLivros(livros);
+                salvarUsuarios(usuarios);
             } else {
                 System.out.println("O livro não esta emprestado com esse usuário.");
             }
@@ -153,9 +182,9 @@ public class Biblioteca {
 
     public void iniciar() {
         int opcao;
-        usuarios = new ArrayList<>();
+        usuarios = carregarUsuarios();
         livros = carregarLivros();
-        int proximoIdUsuario = 1;
+        int proximoIdUsuario = usuarios.size() + 1;
         Scanner scanner = new Scanner(System.in);
 
         do {
