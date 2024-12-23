@@ -29,6 +29,7 @@ public class Biblioteca {
 
         this.livros.add(livro);
         salvarLivros(livros);
+        System.out.println("Livro cadastrado com sucesso!");
     }
 
     private static void salvarLivros(ArrayList<Livro> livros) {
@@ -91,6 +92,7 @@ public class Biblioteca {
 
         this.usuarios.add(usuario);
         salvarUsuarios(usuarios);
+        System.out.println("Usuário cadastrado com sucesso!");
     }
 
     private void realizarEmprestimo(Scanner scanner) {
@@ -109,6 +111,7 @@ public class Biblioteca {
                     livro.emprestar();
                     salvarLivros(livros);
                     salvarUsuarios(usuarios);
+                    System.out.println("Livro emprestado com sucesso!");
                 } else {
                     System.out.println("Livro indisponível.");
                 }
@@ -141,6 +144,7 @@ public class Biblioteca {
                 livro.devolver();
                 salvarLivros(livros);
                 salvarUsuarios(usuarios);
+                System.out.println("Livro devolvido com sucesso!");
             } else {
                 System.out.println("O livro não esta emprestado com esse usuário.");
             }

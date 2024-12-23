@@ -70,8 +70,8 @@ public class Usuario {
     public static Usuario desserializar(String data) {
         String[] propriedades =  data.split(";");
         Usuario usuario = new Usuario(propriedades[0], Integer.parseInt(propriedades[1]));
+        usuario.livrosEmprestados = new ArrayList<>();
         if (propriedades.length > 2) {
-            usuario.livrosEmprestados = new ArrayList<>();
             String[] propriedadesLivros = propriedades[2].split("\\|");
             for( String propriedadeLivro : propriedadesLivros ) {
                 usuario.livrosEmprestados.add(Livro.desserializar(propriedadeLivro));
