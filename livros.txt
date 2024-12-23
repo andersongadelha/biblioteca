@@ -1,0 +1,2 @@
+primeiro;boca;a250acd7-9513-4de9-83e9-0e227cceccdc;false
+segundo;boca;80105b4f-6f87-470a-9d52-db6c74134ea2;true

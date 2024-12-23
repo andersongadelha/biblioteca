@@ -25,6 +25,13 @@ public class Livro {
         this.disponivel = true;
     }
 
+    public Livro(String titulo, String autor, String isbn, boolean disponivel) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.disponivel = disponivel;
+    }
+
     public void exibirDetalhes() {
         System.out.println("Título: " + titulo);
         System.out.println("Autor: " + autor);
@@ -41,4 +48,13 @@ public class Livro {
         this.disponivel = true;
     }
 
+    public String serializar() {
+        return titulo + ";" + autor + ";" + isbn + ";" + disponivel;
+    }
+
+    public static Livro desserializar(String data) {
+        String[] propriedades = data.split(";");
+
+        return new Livro(propriedades[0], propriedades[1], propriedades[2], Boolean.parseBoolean(propriedades[3]));
+    }
 }

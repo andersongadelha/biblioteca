@@ -1,9 +1,12 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Biblioteca {
+    private static final String USUARIOS_TXT = "usuarios.txt";
+    private static final String LIVROS_TXT = "livros.txt";
     private ArrayList<Livro> livros;
     private ArrayList<Usuario> usuarios;
 
@@ -25,6 +28,33 @@ public class Biblioteca {
         Livro livro = new Livro(titulo, autor);
 
         this.livros.add(livro);
+        salvarLivros(livros);
+    }
+
+    private static void salvarLivros(ArrayList<Livro> livros) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LIVROS_TXT))) {
+            for (Livro livro : livros) {
+                writer.write(livro.serializar());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar livro");
+        }
+    }
+
+    private static ArrayList<Livro> carregarLivros() {
+        ArrayList<Livro> livros = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(LIVROS_TXT))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                livros.add(Livro.desserializar(linha));
+            }
+        } catch (Exception e) {
+            return livros;
+        }
+
+        return livros;
     }
 
     private void cadastrarUsuario(Scanner scanner, int id) {
@@ -49,7 +79,8 @@ public class Biblioteca {
             if (usuario.getLivrosEmprestados().size() < 3) {
                 if (livro.isDisponivel()) {
                     usuario.adicionarLivro(livro);
-                    livro.setDisponivel(false);
+                    livro.emprestar();
+                    salvarLivros(livros);
                 } else {
                     System.out.println("Livro indisponível.");
                 }
@@ -79,7 +110,8 @@ public class Biblioteca {
             });
             if (encontrado.get()) {
                 usuario.removerLivro(livro);
-                livro.setDisponivel(true);
+                livro.devolver();
+                salvarLivros(livros);
             } else {
                 System.out.println("O livro não esta emprestado com esse usuário.");
             }
@@ -122,7 +154,7 @@ public class Biblioteca {
     public void iniciar() {
         int opcao;
         usuarios = new ArrayList<>();
-        livros = new ArrayList<>();
+        livros = carregarLivros();
         int proximoIdUsuario = 1;
         Scanner scanner = new Scanner(System.in);
 
